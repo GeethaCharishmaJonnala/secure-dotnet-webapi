@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SecureApi.Data;
 using SecureApi.Models;
 
@@ -13,40 +14,71 @@ public class EmployeeController : ControllerBase
     public EmployeeController(AppDbContext context)
     {
         _context = context;
-
-        // Seed data (runs once)
-        if (!_context.Employees.Any())
-        {
-            _context.Employees.AddRange(
-                new Employee { Id = 1, Name = "John Doe", Role = "Developer", Department = "IT" },
-                new Employee { Id = 2, Name = "Sara Smith", Role = "Manager", Department = "HR" }
-            );
-            _context.SaveChanges();
-        }
     }
 
     // GET: api/employee
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        return Ok(_context.Employees.ToList());
+        var employees = await _context.Employees.ToListAsync();
+        return Ok(employees);
     }
 
     // GET: api/employee/1
     [HttpGet("{id}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        var emp = _context.Employees.Find(id);
-        if (emp == null) return NotFound();
-        return Ok(emp);
+        var employee = await _context.Employees.FindAsync(id);
+
+        if (employee == null)
+            return NotFound(new { message = "Employee not found" });
+
+        return Ok(employee);
     }
 
     // POST: api/employee
     [HttpPost]
-    public IActionResult Create(Employee employee)
+    public async Task<IActionResult> Create([FromBody] Employee employee)
     {
-        _context.Employees.Add(employee);
-        _context.SaveChanges();
+        if (employee == null)
+            return BadRequest(new { message = "Invalid employee data" });
+
+        await _context.Employees.AddAsync(employee);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetById), new { id = employee.Id }, employee);
+    }
+
+    // PUT: api/employee/1
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] Employee updatedEmployee)
+    {
+        var employee = await _context.Employees.FindAsync(id);
+
+        if (employee == null)
+            return NotFound(new { message = "Employee not found" });
+
+        employee.Name = updatedEmployee.Name;
+        employee.Role = updatedEmployee.Role;
+        employee.Department = updatedEmployee.Department;
+
+        await _context.SaveChangesAsync();
+
         return Ok(employee);
+    }
+
+    // DELETE: api/employee/1
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var employee = await _context.Employees.FindAsync(id);
+
+        if (employee == null)
+            return NotFound(new { message = "Employee not found" });
+
+        _context.Employees.Remove(employee);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Employee deleted successfully" });
     }
 }

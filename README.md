@@ -1,28 +1,32 @@
-# Secure .NET Web API
+# 🔐 Secure .NET Web API (Enterprise Level Project)
 
-## 📌 Overview
-This is a secure and scalable ASP.NET Core Web API built using Clean Architecture principles.  
-It demonstrates CRUD operations using Entity Framework Core (In-Memory DB).
+## 🚀 Overview
+This project is a secure and scalable ASP.NET Core Web API built using C# and .NET 7. It demonstrates real-world backend development practices including CRUD operations, Entity Framework Core integration, and clean API design. It is structured as a portfolio-ready project for senior .NET developer roles.
 
 ---
 
-## 🚀 Features
-- ASP.NET Core Web API
-- RESTful endpoints
-- Entity Framework Core (In-Memory Database)
-- Swagger API documentation
-- Clean project structure (Controllers, Models, Data)
-- CRUD operations (Create, Read, GetById)
+## ✨ Features
+
+- RESTful API architecture
+- Employee CRUD operations (Create, Read, Update, Delete)
+- Entity Framework Core integration
+- In-memory database (upgradeable to SQL Server)
+- Clean and modular code structure
+- Swagger API testing support
+- Ready for JWT authentication extension
+- GitHub-ready enterprise structure
 
 ---
 
 ## 🧱 Tech Stack
-- .NET 7 / .NET 8
-- C#
-- ASP.NET Core Web API
+
+- .NET 7 / ASP.NET Core Web API
+- C# Programming Language
 - Entity Framework Core
+- REST API Principles
 - Swagger / OpenAPI
+- Git & GitHub
 
 ---
 
-## 📂 Project Structure
+## 📁 Project Structure
